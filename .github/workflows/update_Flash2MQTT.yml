@@ -9,7 +9,7 @@ on:
 
 jobs:
   update-central-repo:
-    if: ${{ github.event.release.prerelease == false || github.event_name != 'release' }}
+    if: ${{ (github.event_name == 'release' && github.event.release.prerelease == false) || github.event_name != 'release' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -38,19 +38,16 @@ jobs:
             let release;
             let releaseTag;
 
-            // Falls Release-Event → direkt übernehmen
             if (context.eventName === 'release') {
               release = context.payload.release;
               releaseTag = release.tag_name;
               console.log(`Using release from event: ${releaseTag}`);
             } else {
-              // Sonst: latest release holen
               const res = await github.rest.repos.getLatestRelease({ owner, repo });
               release = res.data;
               releaseTag = release.tag_name;
               console.log(`Using latest release: ${releaseTag}`);
 
-              // Nur bei schedule: prüfen, ob sich das Release geändert hat
               if (context.eventName === 'schedule') {
                 const cachePath = path.join(process.cwd(), 'Flash2MQTT', 'release_check.json');
                 let last = {};
