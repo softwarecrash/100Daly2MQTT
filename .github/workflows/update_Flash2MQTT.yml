@@ -5,7 +5,7 @@ on:
     types: [published]
   workflow_dispatch:
   schedule:
-    - cron: "*/20 * * * *"  # alle 20 Minuten
+    - cron: "*/20 * * * *"
 
 jobs:
   update-central-repo:
@@ -55,13 +55,17 @@ jobs:
                   last = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
                 }
 
+                console.log(`Last recorded: ID=${last.id}, updated_at=${last.updated_at}`);
+                console.log(`Current latest: ID=${release.id}, updated_at=${release.updated_at}`);
+
                 if (last.id === release.id && last.updated_at === release.updated_at) {
-                  console.log('Release unchanged. Skipping.');
+                  console.log('Release unchanged, skipping workflow.');
                   core.setOutput('skip', 'true');
-                  return;
+                  process.exit(0);
                 }
 
                 fs.writeFileSync(cachePath, JSON.stringify({ id: release.id, updated_at: release.updated_at }));
+                console.log('Updated release_check.json with latest release info.');
               }
             }
 
@@ -176,5 +180,6 @@ jobs:
             git commit --allow-empty -m "Force update for ${{ github.event.repository.name }} to version $RELEASE_VERSION (no file changes)"
           git pull --rebase origin main
           git push https://all-solutions:${{ secrets.CENTRAL_REPO_TOKEN }}@github.com/all-solutions/Flash2MQTT.git HEAD:main
+
 
 
