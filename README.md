@@ -42,7 +42,7 @@ Little Program for ESP82XX to get the 100Balance and new Daly (H/K/M/S series) B
 
 
 # How to use:
-- flash your ESP8266 (recommended Wemos D1 Mini) with our [Flash2MQTT-Tool]([https://flash.2mqtt.de/?get=100Daly2MQTT) or our desktop [2MQTT-Flasher](https://github.com/all-solutions/2MQTT-Flasher)
+- flash your ESP8266 (recommended Wemos D1 Mini) with our [Flash2MQTT-Tool](https://flash.2mqtt.de/?get=100Daly2MQTT) or our desktop [2MQTT-Flasher](https://github.com/all-solutions/2MQTT-Flasher)
 - connect the ESP like the [wiring diagram](https://github.com/softwarecrash/100Daly2MQTT/wiki/Wiring)
 - search for the wifi ap "100Balance2MQTT-AP" and connect to it
 - surf to 192.168.4.1 and set up your wifi and optional MQTT
